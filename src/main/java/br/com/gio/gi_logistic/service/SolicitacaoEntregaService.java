@@ -2,6 +2,7 @@ package br.com.gio.gi_logistic.service;
 
 import br.com.gio.gi_logistic.DTO.DestinatarioModel;
 import br.com.gio.gi_logistic.DTO.EntregaModel;
+import br.com.gio.gi_logistic.assembler.EntregaAssembler;
 import br.com.gio.gi_logistic.exceptionhandler.NegocioException;
 import br.com.gio.gi_logistic.model.Destinatario;
 import br.com.gio.gi_logistic.model.Entrega;
@@ -24,6 +25,7 @@ public class SolicitacaoEntregaService {
 
     private EntregaRepository repository;
     private ClienteRepository clienteRepository;
+    private EntregaAssembler entregaAssembler;
 
     @Transactional
     public EntregaModel solicitar(Entrega entrega) {
@@ -48,19 +50,13 @@ public class SolicitacaoEntregaService {
     public ResponseEntity<EntregaModel> findById(Integer id) {
         return repository.findById(id)
 
-                .map(entrega -> {
-
-                    EntregaModel entregaModel1 = new EntregaModel(entrega);
-
-
-
-                    return ResponseEntity.ok(entregaModel1);
+                .map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
+                .orElse(ResponseEntity.notFound().build());
 
                     /*return repository.findById(id)
                             .map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
                             .orElse(ResponseEntity.notFound().build());*/
-                })
-                .orElse(ResponseEntity.notFound().build());
+
     }
 
 }

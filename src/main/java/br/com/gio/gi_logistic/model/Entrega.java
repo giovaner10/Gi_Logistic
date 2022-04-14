@@ -28,27 +28,18 @@ public class Entrega {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @NotNull
-    @Valid
-    @ConvertGroup(from = Default.class, to = ValidationsGroup.ClienteId.class)
     private Cliente cliente;
 
-    @NotNull
     @Embedded
-    @Valid
     private Destinatario destinatario;
 
-    @NotNull
-    private BigDecimal taxa;
+     private BigDecimal taxa;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
     private StatusEntrega status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataPedido;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataFinalizacao;
 
 

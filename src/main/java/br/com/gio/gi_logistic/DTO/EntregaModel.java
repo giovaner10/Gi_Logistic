@@ -16,7 +16,7 @@ public class EntregaModel {
 
     private Integer id;
     private String nomeCliente;
-    private DestinatarioModel destinatarioModel;
+    private DestinatarioModel destinatario;
     private BigDecimal taxa;
     private StatusEntrega statusEntrega;
     private OffsetDateTime dataPedido;
@@ -32,7 +32,7 @@ public class EntregaModel {
 
         this.nomeCliente = entrega.getDestinatario().getNome();
 
-        destinatarioModel = new DestinatarioModel(entrega.getDestinatario());
+        destinatario = new DestinatarioModel(entrega.getDestinatario());
 
 
     }
