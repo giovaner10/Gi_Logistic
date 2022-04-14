@@ -26,11 +26,11 @@ public class Cliente {
     private Integer id;
 
     @NotBlank
-    @Email
     @Size(max = 255)
     private String nome;
 
     @NotBlank
+    @Email
     @Size(max = 60)
     private String email;
 

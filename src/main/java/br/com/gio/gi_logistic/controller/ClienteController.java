@@ -2,6 +2,7 @@ package br.com.gio.gi_logistic.controller;
 
 import br.com.gio.gi_logistic.model.Cliente;
 import br.com.gio.gi_logistic.repository.ClienteRepository;
+import br.com.gio.gi_logistic.service.CatalagoClienteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class ClienteController {
     // private EntityManager manager;
 
     private ClienteRepository repository;
+    private CatalagoClienteService service;
 
     /*@GetMapping("/clientes")
     public List<Cliente> listar(){
@@ -59,7 +61,7 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
 
-        return repository.save(cliente);
+        return service.salvar(cliente);
     }
 
     @PutMapping("/{id}")
@@ -71,7 +73,7 @@ public class ClienteController {
         }
 
         cliente.setId(id);
-        Cliente save = repository.save(cliente);
+        Cliente save = service.salvar(cliente);
 
         return ResponseEntity.ok(save);
     }
@@ -82,7 +84,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
 
-        repository.deleteById(id);
+        service.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }
