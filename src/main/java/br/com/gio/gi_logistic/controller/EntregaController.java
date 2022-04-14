@@ -22,11 +22,9 @@ import java.util.List;
 public class EntregaController {
 
 
-
     private SolicitacaoEntregaService service;
     private EntregaRepository entregaRepository;
     private EntregaAssembler entregaAssembler;
-
 
 
     @PostMapping
@@ -35,7 +33,7 @@ public class EntregaController {
 
         Entrega novaEntrega = entregaAssembler.toEntity(entrega);
 
-        return service.solicitar(novaEntrega );
+        return service.solicitar(novaEntrega);
     }
 
     @GetMapping("/{id}")
@@ -47,12 +45,11 @@ public class EntregaController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Entrega> buscar() {
+    public List<EntregaModel> buscar() {
 
 
-        return entregaRepository.findAll();
+        return entregaAssembler.toCollectionMode(entregaRepository.findAll());
     }
-
 
 
 }
