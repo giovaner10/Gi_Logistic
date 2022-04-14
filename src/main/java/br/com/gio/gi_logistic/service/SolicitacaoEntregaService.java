@@ -1,17 +1,22 @@
 package br.com.gio.gi_logistic.service;
 
+import br.com.gio.gi_logistic.DTO.DestinatarioModel;
+import br.com.gio.gi_logistic.DTO.EntregaModel;
 import br.com.gio.gi_logistic.exceptionhandler.NegocioException;
-import br.com.gio.gi_logistic.model.Cliente;
+import br.com.gio.gi_logistic.model.Destinatario;
 import br.com.gio.gi_logistic.model.Entrega;
 import br.com.gio.gi_logistic.model.StatusEntrega;
 import br.com.gio.gi_logistic.repository.ClienteRepository;
 import br.com.gio.gi_logistic.repository.EntregaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.OffsetDateTime;
 
 @Service
 @AllArgsConstructor
@@ -21,24 +26,41 @@ public class SolicitacaoEntregaService {
     private ClienteRepository clienteRepository;
 
     @Transactional
-    public Entrega solicitar(Entrega entrega){
+    public EntregaModel solicitar(Entrega entrega) {
 
         boolean cliente = clienteRepository.existsById(entrega.getCliente().getId());
-        if(!cliente)  throw new  NegocioException("Cliente nao encontrado") ;
+        if (!cliente) throw new NegocioException("Cliente nao encontrado");
 
         entrega.setCliente(entrega.getCliente());
         entrega.setStatus(StatusEntrega.PENDENTE);
-        entrega.setDataPedido(LocalDateTime.now());
+        entrega.setDataPedido(OffsetDateTime.now());
 
-        return repository.save(entrega);
+         repository.save(entrega);
+        EntregaModel entregaModel1 = new EntregaModel(entrega);
+
+        return entregaModel1;
     }
 
-    public void excluir(Integer id){
+    public void excluir(Integer id) {
         repository.deleteById(id);
     }
 
-    public Optional<Entrega> findById(Integer id){
-       return repository.findById(id);
+    public ResponseEntity<EntregaModel> findById(Integer id) {
+        return repository.findById(id)
+
+                .map(entrega -> {
+
+                    EntregaModel entregaModel1 = new EntregaModel(entrega);
+
+
+
+                    return ResponseEntity.ok(entregaModel1);
+
+                    /*return repository.findById(id)
+                            .map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
+                            .orElse(ResponseEntity.notFound().build());*/
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

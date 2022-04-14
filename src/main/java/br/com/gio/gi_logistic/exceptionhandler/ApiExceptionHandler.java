@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Exception exception = Exception.builder()
                 .status(status.value())
-                .dataHora(LocalDateTime.now())
+                .dataHora(OffsetDateTime.now())
                 .titulo("Um ou mais campos apresentam erro")
                 .campos(campos)
                 .build();
@@ -56,7 +57,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handlerNegocio(IncorrectResultSizeDataAccessException ex, WebRequest request){
         Exception exception = Exception.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .dataHora(LocalDateTime.now())
+                .dataHora(OffsetDateTime.now())
                 .titulo(ex.getLocalizedMessage())
                 .build();
         return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
@@ -67,7 +68,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> negocioException(NegocioException ex, WebRequest request){
         Exception exception = Exception.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .dataHora(LocalDateTime.now())
+                .dataHora(OffsetDateTime.now())
                 .titulo(ex.getLocalizedMessage())
                 .build();
         return handleExceptionInternal(ex,exception, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
