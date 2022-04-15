@@ -1,5 +1,6 @@
 package br.com.gio.gi_logistic.model;
 
+import br.com.gio.gi_logistic.exceptionhandler.NegocioException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -60,5 +61,17 @@ public class  Entrega {
     }
 
 
+    public void finalizar() {
+        if(naoPodeSerFinalizada()){
+            throw new NegocioException("A entregao nao foi finalizada pois ela não estava em andamento");
+        }
 
+        setStatus(StatusEntrega.FINALIZADA);
+        setDataFinalizacao(OffsetDateTime.now());
+    }
+
+
+    public boolean naoPodeSerFinalizada(){
+        return !StatusEntrega.PENDENTE.equals(getStatus());
+    }
 }

@@ -5,6 +5,7 @@ import br.com.gio.gi_logistic.assembler.EntregaAssembler;
 import br.com.gio.gi_logistic.model.Entrega;
 import br.com.gio.gi_logistic.model.input.EntregaInput;
 import br.com.gio.gi_logistic.repository.EntregaRepository;
+import br.com.gio.gi_logistic.service.FinalizacaoEntregaService;
 import br.com.gio.gi_logistic.service.SolicitacaoEntregaService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,7 @@ public class EntregaController {
     private SolicitacaoEntregaService service;
     private EntregaRepository entregaRepository;
     private EntregaAssembler entregaAssembler;
+    private FinalizacaoEntregaService finalizacaoEntregaService;
 
 
     @PostMapping
@@ -50,6 +52,13 @@ public class EntregaController {
 
         return entregaAssembler.toCollectionMode(entregaRepository.findAll());
     }
+
+    @PutMapping("/{id}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizarEntrega(@PathVariable Integer id){
+        finalizacaoEntregaService.finalizar(id);
+    }
+
 
 
 }
